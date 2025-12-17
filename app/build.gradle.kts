@@ -6,6 +6,7 @@ plugins {
 
     alias(libs.plugins.kotlin.compose)
 
+
     id("com.google.devtools.ksp")
 
 }
@@ -36,17 +37,6 @@ android {
 
 
     }
-
-    // For Kotlin projects using KSP:
-
-    ksp {
-
-        arg("room.schemaLocation", "$projectDir/schemas")
-
-    }
-
-
-
 
     buildTypes {
 
@@ -128,6 +118,10 @@ configurations {
 
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 
 
 
@@ -148,14 +142,20 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.navigation.testing)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+
+    // retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // datastore
+    // Preferences DataStore (SharedPreferences like APIs)
+    implementation("androidx.datastore:datastore-preferences:1.2.0")
 
     implementation(libs.core.ktx)
 
     implementation(libs.androidx.compose.ui.test.junit4)
-
-    implementation(libs.androidx.room.compiler)
 
     implementation(libs.androidx.room.runtime)
 

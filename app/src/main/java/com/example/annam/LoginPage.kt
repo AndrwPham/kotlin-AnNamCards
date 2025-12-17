@@ -1,5 +1,6 @@
 package com.example.annam
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,12 +17,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun LoginPage(networkService: NetworkService){
+fun LoginPage(
+    networkService: NetworkService,
+    navigator: NavHostController
+){
 
     var token by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -52,18 +57,26 @@ fun LoginPage(networkService: NetworkService){
                 .fillMaxWidth()
                 .semantics { contentDescription = "Enter" },
             onClick = {
+                if (email.isBlank()) {
+                    token = "Please enter an email"
+                    return@Button
+                }
                 scope.launch {
-                    withContext(Dispatchers.IO) {
-                        try {
-                            val result = networkService.generateToken(
+                    try {
+                        val result = withContext(Dispatchers.IO) {
+                            networkService.generateToken(
                                 email = UserCredential(email)
                             )
-                            token = result.token
-                            Log.d("FLASHCARD", result.toString())
-
-                        } catch (e: Exception) {
-                            Log.d("FLASHCARD", "Unexpected exception: $e")
                         }
+                        token = "Code: ${result.code}, Message: ${result.message}"
+                        if (result.code == 200) {
+                            val encodedEmail = Uri.encode(email)
+                            navigator.navigate("tokenPage/$encodedEmail")
+                        }
+                        Log.d("result", result.toString())
+                    } catch (e: Exception) {
+                        Log.d("FLASHCARD", "Unexpected exception: $e")
+                        token = "Error: ${e.message}"
                     }
                 }
             }

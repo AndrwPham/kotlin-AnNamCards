@@ -3,9 +3,11 @@ package com.example.annam
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +76,25 @@ fun Navigator(
         }
         composable(route = "loginPage") {
             LoginPage(
-                networkService= networkService
+                networkService= networkService,
+                navigator = navController
+            )
+        }
+        composable(
+            route = "tokenPage/{email}",
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType; defaultValue = "" }
+            )
+        ) { backStackEntry ->
+            val emailArg = backStackEntry.arguments?.getString("email") ?: ""
+            TokenScreen(
+                email = emailArg,
+                navBack = navBack,
+                navigateToHome = {
+                    navController.navigate("menu") {
+                        popUpTo("menu") { inclusive = false }
+                    }
+                }
             )
         }
         composable(route = "study_card") {
@@ -83,5 +103,6 @@ fun Navigator(
                 flashCardDao = flashCardDao
             )
         }
+        
     }
 }
