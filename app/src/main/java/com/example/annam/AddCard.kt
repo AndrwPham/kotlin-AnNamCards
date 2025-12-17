@@ -2,6 +2,8 @@ package com.example.annam
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -9,66 +11,70 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun AddCard(navBack: () -> Unit){
-//        var enWord = ""
-//
-//        var vnWord = ""
+fun AddCard(
+    navBack: () -> Unit,
+    flashCardDao: FlashCardDao
+) {
+    var enWord by remember { mutableStateOf("") }
+    var vnWord by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
-        var enWord by remember { mutableStateOf("") }
-
-        var vnWord by remember { mutableStateOf("") }
-
-        //var enWord by rememberSaveable { mutableStateOf("") }
-
-        //var vnWord by rememberSaveable { mutableStateOf("") }
-
-        Column() {
-
-            TextField(
-
-                value = enWord,
-
-                onValueChange = { enWord = it },
-
-                modifier = Modifier.semantics{contentDescription = "English String"},
-
-                label = { Text("en") }
-
-            )
-
-            TextField(
-
-                value = vnWord,
-
-                onValueChange = { vnWord = it },
-
-                label = { Text("vn") }
-
-            )
-
-            Button(onClick = {
-                enWord="hello"
-
-                Log.d(
-
-                    "TEST", "Adding a card with words: "
-
-                            + enWord + " and " + vnWord
-
-                )
-
-            }) {
-
-                Text("Add")
-
-            }
-
+    Column {
+        Button(
+            modifier = Modifier.align(Alignment.Start),
+            onClick = navBack
+        ) {
+            Text("Back")
         }
 
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextField(
+            value = enWord,
+            onValueChange = { enWord = it },
+            label = { Text("en") }
+        )
+
+        TextField(
+            value = vnWord,
+            onValueChange = { vnWord = it },
+            label = { Text("vn") }
+        )
+
+        Button(onClick = {
+            scope.launch(Dispatchers.IO) {
+                var english = enWord.trim()
+                var vietnamese = vnWord.trim()
+                if (english.isEmpty() || vietnamese.isEmpty()) {
+                    Log.d("demo", "Skip insert: blank English or Vietnamese value")
+                    return@launch
+                }
+                try {
+                    flashCardDao.insertAll(
+                        FlashCard(
+                            uid = 0,
+                            englishCard = english,
+                            vietnameseCard = vietnamese
+                        )
+                    )
+                    Log.d("demo", "Added card: $english / $vietnamese")
+                } catch (e: Exception) {
+                    Log.d("demo", "Insert failed: $e")
+                }
+            }
+            enWord = ""
+            vnWord = ""
+        }) {
+            Text("Add")
+        }
     }
+}

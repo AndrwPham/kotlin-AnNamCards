@@ -7,6 +7,7 @@ import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
@@ -30,11 +31,14 @@ interface FlashCardDao {
     @Query("SELECT * FROM FlashCards WHERE uid IN (:flashCardIds)")
     suspend fun loadAllByIds(flashCardIds: IntArray): List<FlashCard>
 
+    @Query("SELECT * FROM FlashCards ORDER BY RANDOM() LIMIT 3")
+    suspend fun loadRandomThree(): List<FlashCard>
+
     @Query("SELECT * FROM FlashCards WHERE english_card LIKE :english AND " +
             "vietnamese_card LIKE :vietnamese LIMIT 1")
     suspend fun findByCards(english: String, vietnamese: String): FlashCard
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(vararg flashCard: FlashCard)
 
     @Delete

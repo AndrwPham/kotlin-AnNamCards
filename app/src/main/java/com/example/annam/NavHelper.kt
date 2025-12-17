@@ -9,7 +9,11 @@ import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Navigator(navController: NavHostController, networkService: NetworkService) {
+fun Navigator(
+    navController: NavHostController,
+    networkService: NetworkService,
+    flashCardDao: FlashCardDao
+) {
     val navController = rememberNavController()
     val navBack = fun () {
         navController.navigateUp()
@@ -64,7 +68,8 @@ fun Navigator(navController: NavHostController, networkService: NetworkService) 
         }
         composable(route = "add_card") {
             AddCard(
-                navBack =navBack
+                navBack =navBack,
+                flashCardDao = flashCardDao
             )
         }
         composable(route = "loginPage") {
@@ -72,7 +77,11 @@ fun Navigator(navController: NavHostController, networkService: NetworkService) 
                 networkService= networkService
             )
         }
+        composable(route = "study_card") {
+            StudyCard(
+                navBack = navBack,
+                flashCardDao = flashCardDao
+            )
+        }
     }
 }
-//}
-//}

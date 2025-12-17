@@ -49,7 +49,11 @@ class MainActivity : ComponentActivity() {
 
             val networkService = retrofit.create(NetworkService::class.java)
             AnNamTheme {
-                Navigator(navController = NavHostController(this),networkService)
+                Navigator(
+                    navController = NavHostController(this),
+                    networkService = networkService,
+                    flashCardDao = flashCardDao
+                )
             }
 
         }
@@ -85,9 +89,9 @@ fun Menu(navigator: NavHostController) {
         }
 
         Button(onClick = {
-            navigator.navigate("play")
+            navigator.navigate("study_card")
         }) {
-            Text("Play")
+            Text("Study Cards")
         }
 
         Button(modifier= Modifier.semantics{contentDescription = "navToLogin"},
