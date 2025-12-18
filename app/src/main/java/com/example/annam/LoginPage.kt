@@ -1,6 +1,5 @@
 package com.example.annam
 
-import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -70,8 +69,7 @@ fun LoginPage(
                         }
                         token = "Code: ${result.code}, Message: ${result.message}"
                         if (result.code == 200) {
-                            val encodedEmail = Uri.encode(email)
-                            navigator.navigate("tokenPage/$encodedEmail")
+                            navigator.navigate("tokenPage/$email")
                         }
                         Log.d("result", result.toString())
                     } catch (e: Exception) {

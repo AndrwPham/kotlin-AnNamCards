@@ -36,10 +36,11 @@ coreKtxVersion = "1.7.0"
 
 ui = "1.9.4"
 
-
-
+media3Exoplayer = "1.8.0"
 
 [libraries]
+
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }
 
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeVersion" }
 

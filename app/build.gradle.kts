@@ -160,6 +160,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
 
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.media3.exoplayer)
 
     testImplementation(libs.junit)
 
