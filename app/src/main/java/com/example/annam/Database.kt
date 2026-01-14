@@ -38,6 +38,30 @@ interface FlashCardDao {
             "vietnamese_card LIKE :vietnamese LIMIT 1")
     suspend fun findByCards(english: String, vietnamese: String): FlashCard
 
+    @Query(
+        """
+        SELECT * FROM FlashCards
+        WHERE
+            (
+                (:en = '' AND :exactEn = 0)
+                OR (:en <> '' AND :exactEn = 1 AND lower(english_card) = lower(:en))
+                OR (:en <> '' AND :exactEn = 0 AND lower(english_card) LIKE '%' || lower(:en) || '%')
+            )
+            AND
+            (
+                (:vn = '' AND :exactVn = 0)
+                OR (:vn <> '' AND :exactVn = 1 AND lower(vietnamese_card) = lower(:vn))
+                OR (:vn <> '' AND :exactVn = 0 AND lower(vietnamese_card) LIKE '%' || lower(:vn) || '%')
+            )
+        """
+    )
+    suspend fun getFilteredFlashCards(
+        en: String,
+        exactEn: Int,
+        vn: String,
+        exactVn: Int
+    ): List<FlashCard>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(vararg flashCard: FlashCard)
 
@@ -52,5 +76,4 @@ interface FlashCardDao {
 abstract class AppDatabase : RoomDatabase() {
     abstract fun flashCardDao(): FlashCardDao
 }
-
 

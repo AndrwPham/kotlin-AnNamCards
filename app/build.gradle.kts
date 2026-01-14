@@ -8,6 +8,7 @@ plugins {
 
 
     id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.serialization")
 
 }
 

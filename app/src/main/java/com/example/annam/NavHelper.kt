@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,7 +67,20 @@ fun Navigator(
         composable(route = "search_card") {
             SearchCard(
                 navBack= navBack,
-                flashCardDao =flashCardDao
+                navigateToResults = { args ->
+                    navController.navigate(args)
+                }
+            )
+        }
+        composable<SearchResultRoute> { backStackEntry ->
+            val searchArgs = backStackEntry.toRoute<SearchResultRoute>()
+            SearchResults(
+                navBack = navBack,
+                flashCardDao = flashCardDao,
+                englishQuery = searchArgs.englishQuery,
+                vietnameseQuery = searchArgs.vietnameseQuery,
+                englishExact = searchArgs.englishExact,
+                vietnameseExact = searchArgs.vietnameseExact
             )
         }
         composable(route = "add_card") {
