@@ -65,7 +65,8 @@ fun Navigator(
 
         composable(route = "search_card") {
             SearchCard(
-                navigator = navController
+                navBack= navBack,
+                flashCardDao =flashCardDao
             )
         }
         composable(route = "add_card") {
