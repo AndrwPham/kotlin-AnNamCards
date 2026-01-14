@@ -10,3 +10,9 @@ data class UserToken (val token: String)
 
 @Serializable
 data class TokenResponse(val code: Int, val message: String)
+
+@Serializable
+data class AudioRequest(val word: String, val email: String, val token: String)
+
+@Serializable
+data class AudioResponse(val code: Int, val message: String)

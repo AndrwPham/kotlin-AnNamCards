@@ -43,6 +43,9 @@ interface FlashCardDao {
 
     @Delete
     fun delete(flashCard: FlashCard)
+
+    @Query("DELETE FROM FlashCards")
+    suspend fun clearAll()
 }
 
 @Database(entities = [FlashCard::class], version = 1)

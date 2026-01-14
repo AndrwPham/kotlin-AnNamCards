@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun AddCard(
@@ -51,13 +52,13 @@ fun AddCard(
         )
 
         Button(onClick = {
+            val english = enWord.trim()
+            val vietnamese = vnWord.trim()
+            if (english.isEmpty() || vietnamese.isEmpty()) {
+                Log.d("demo", "Skip insert: blank English or Vietnamese value")
+                return@Button
+            }
             scope.launch(Dispatchers.IO) {
-                var english = enWord.trim()
-                var vietnamese = vnWord.trim()
-                if (english.isEmpty() || vietnamese.isEmpty()) {
-                    Log.d("demo", "Skip insert: blank English or Vietnamese value")
-                    return@launch
-                }
                 try {
                     flashCardDao.insertAll(
                         FlashCard(
@@ -70,9 +71,11 @@ fun AddCard(
                 } catch (e: Exception) {
                     Log.d("demo", "Insert failed: $e")
                 }
+                withContext(Dispatchers.Main) {
+                    enWord = ""
+                    vnWord = ""
+                }
             }
-            enWord = ""
-            vnWord = ""
         }) {
             Text("Add")
         }

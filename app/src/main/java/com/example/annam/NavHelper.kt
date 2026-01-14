@@ -100,7 +100,8 @@ fun Navigator(
         composable(route = "study_card") {
             StudyCard(
                 navBack = navBack,
-                flashCardDao = flashCardDao
+                flashCardDao = flashCardDao,
+                networkService = networkService
             )
         }
         
