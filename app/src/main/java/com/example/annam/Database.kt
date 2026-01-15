@@ -11,6 +11,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
+import androidx.room.Update
 
 
 @Entity(tableName = "FlashCards", indices = [Index(
@@ -30,9 +31,6 @@ interface FlashCardDao {
 
     @Query("SELECT * FROM FlashCards WHERE uid IN (:flashCardIds)")
     suspend fun loadAllByIds(flashCardIds: IntArray): List<FlashCard>
-
-    @Query("SELECT * FROM FlashCards WHERE uid = :uid LIMIT 1")
-    suspend fun getById(uid: Int): FlashCard?
 
     @Query("SELECT * FROM FlashCards ORDER BY RANDOM() LIMIT 3")
     suspend fun loadRandomThree(): List<FlashCard>
@@ -58,6 +56,9 @@ interface FlashCardDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(vararg flashCard: FlashCard)
+
+    @Update
+    suspend fun update(flashCard: FlashCard)
 
     @Delete
     fun delete(flashCard: FlashCard)
