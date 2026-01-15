@@ -3,11 +3,9 @@ package com.example.annam
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,50 +19,19 @@ fun Navigator(
     val navBack = fun () {
         navController.navigateUp()
     }
-//    Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                colors = topAppBarColors(
-//                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                    titleContentColor = MaterialTheme.colorScheme.primary,
-//                ),
-//                title = {
-//                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-//                        Text(modifier = Modifier.semantics {
-//                            contentDescription = "user"
-//                        },
-//                            text = "An Nam")
-//                    }
-//                },
-//                navigationIcon = {
-//                    val currentRoute =
-//                        navController.currentBackStackEntryAsState().value?.destination?.route
-//                    if (currentRoute != "home") {
-//                        IconButton(onClick = {
-//                            navController.navigateUp()
-//                        }){
-//                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-//                        }
-//                    } else {
-//    // Show drawer icon or nothing on home
-//                   }
-//               }
-//           )
-//       },
-//    ) { innerPadding ->
     NavHost(
         //modifier = Modifier.padding(innerPadding),
         navController = navController,
-        startDestination = "menu"
+        startDestination = HomeRoute
     ) {
         // HOME
-        composable(route = "menu") {
+        composable<HomeRoute> {
             Menu(
                 navigator = navController
             )
         }
 
-        composable(route = "search_card") {
+        composable<SearchScreenRoute> {
             SearchCard(
                 navBack= navBack,
                 navigateToResults = { args ->
@@ -72,47 +39,42 @@ fun Navigator(
                 }
             )
         }
-        composable<SearchResultRoute> { backStackEntry ->
-            val searchArgs = backStackEntry.toRoute<SearchResultRoute>()
+        composable<SearchCardsRoute> { backStackEntry ->
+            val searchArgs = backStackEntry.toRoute<SearchCardsRoute>()
             SearchResults(
                 navBack = navBack,
                 flashCardDao = flashCardDao,
-                englishQuery = searchArgs.englishQuery,
-                vietnameseQuery = searchArgs.vietnameseQuery,
-                englishExact = searchArgs.englishExact,
-                vietnameseExact = searchArgs.vietnameseExact
+                englishQuery = searchArgs.en,
+                vietnameseQuery = searchArgs.vn,
+                englishExact = searchArgs.searchByEnglish,
+                vietnameseExact = searchArgs.searchByVietnamese
             )
         }
-        composable(route = "add_card") {
+        composable<AddCardRoute> {
             AddCard(
                 navBack =navBack,
                 flashCardDao = flashCardDao
             )
         }
-        composable(route = "loginPage") {
+        composable<LoginRoute> {
             LoginPage(
                 networkService= networkService,
                 navigator = navController
             )
         }
-        composable(
-            route = "tokenPage/{email}",
-            arguments = listOf(
-                navArgument("email") { type = NavType.StringType; defaultValue = "" }
-            )
-        ) { backStackEntry ->
-            val emailArg = backStackEntry.arguments?.getString("email") ?: ""
+        composable<TokenRoute> { backStackEntry ->
+            val emailArg = backStackEntry.toRoute<TokenRoute>().email
             TokenScreen(
                 email = emailArg,
                 navBack = navBack,
                 navigateToHome = {
-                    navController.navigate("menu") {
-                        popUpTo("menu") { inclusive = false }
+                    navController.navigate(HomeRoute) {
+                        launchSingleTop = true
                     }
                 }
             )
         }
-        composable(route = "study_card") {
+        composable<StudyCardsRoute> {
             StudyCard(
                 navBack = navBack,
                 flashCardDao = flashCardDao,

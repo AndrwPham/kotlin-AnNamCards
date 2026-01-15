@@ -69,7 +69,7 @@ fun LoginPage(
                         }
                         token = "Code: ${result.code}, Message: ${result.message}"
                         if (result.code == 200) {
-                            navigator.navigate("tokenPage/$email")
+                            navigator.navigate(TokenRoute(email))
                         }
                         Log.d("result", result.toString())
                     } catch (e: Exception) {

@@ -16,11 +16,3 @@ data class AudioRequest(val word: String, val email: String, val token: String)
 
 @Serializable
 data class AudioResponse(val code: Int, val message: String)
-
-@Serializable
-data class SearchResultRoute(
-    val englishQuery: String,
-    val vietnameseQuery: String,
-    val englishExact: Boolean,
-    val vietnameseExact: Boolean
-)

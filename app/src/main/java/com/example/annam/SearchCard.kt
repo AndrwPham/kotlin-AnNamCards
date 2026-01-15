@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SearchCard(
     navBack: () -> Unit,
-    navigateToResults: (SearchResultRoute) -> Unit
+    navigateToResults: (SearchCardsRoute) -> Unit
 ) {
     var enWord by remember { mutableStateOf("") }
     var vnWord by remember { mutableStateOf("") }
@@ -70,11 +70,11 @@ fun SearchCard(
                 val vietnameseQuery = vnWord.trim()
                 Log.d("search query", "Search for: $englishQuery / $vietnameseQuery")
                 navigateToResults(
-                    SearchResultRoute(
-                        englishQuery = englishQuery,
-                        vietnameseQuery = vietnameseQuery,
-                        englishExact = isCheckedEnglish,
-                        vietnameseExact = isCheckedVietnamese
+                    SearchCardsRoute(
+                        en = englishQuery,
+                        vn = vietnameseQuery,
+                        searchByEnglish = isCheckedEnglish,
+                        searchByVietnamese = isCheckedVietnamese
                     )
                 )
             }

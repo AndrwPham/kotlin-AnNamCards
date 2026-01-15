@@ -39,21 +39,12 @@ interface FlashCardDao {
     suspend fun findByCards(english: String, vietnamese: String): FlashCard
 
     @Query(
-        """
-        SELECT * FROM FlashCards
-        WHERE
-            (
-                (:en = '' AND :exactEn = 0)
-                OR (:en <> '' AND :exactEn = 1 AND lower(english_card) = lower(:en))
-                OR (:en <> '' AND :exactEn = 0 AND lower(english_card) LIKE '%' || lower(:en) || '%')
-            )
-            AND
-            (
-                (:vn = '' AND :exactVn = 0)
-                OR (:vn <> '' AND :exactVn = 1 AND lower(vietnamese_card) = lower(:vn))
-                OR (:vn <> '' AND :exactVn = 0 AND lower(vietnamese_card) LIKE '%' || lower(:vn) || '%')
-            )
-        """
+        "SELECT * FROM FlashCards WHERE " +
+                "(CASE WHEN :exactEn THEN english_card LIKE :en  " +
+                "WHEN NOT :exactEn  THEN english_card LIKE '%' || :en || '%' END) " +
+                "AND " +
+                "(CASE WHEN :exactVn THEN vietnamese_card LIKE :vn " +
+                "WHEN NOT :exactVn THEN vietnamese_card LIKE '%' || :vn || '%' END)"
     )
     suspend fun getFilteredFlashCards(
         en: String,

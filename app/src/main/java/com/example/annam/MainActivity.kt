@@ -128,26 +128,26 @@ fun Menu(navigator: NavHostController) {
 
         Button( modifier = Modifier.semantics{contentDescription = "navToAddCard"},
             onClick = {
-            navigator.navigate("add_card")
+            navigator.navigate(AddCardRoute)
         }){
             Text("Add Card")
         }
 
         Button(onClick = {
-            navigator.navigate("search_card")
+            navigator.navigate(SearchScreenRoute)
         }){
             Text("Search Card")
         }
 
         Button(onClick = {
-            navigator.navigate("study_card")
+            navigator.navigate(StudyCardsRoute)
         }) {
             Text("Study Cards")
         }
 
         Button(modifier= Modifier.semantics{contentDescription = "navToLogin"},
             onClick = {
-            navigator.navigate("loginPage")
+            navigator.navigate(LoginRoute)
         }){
             Text("Login")
         }
@@ -172,4 +172,3 @@ fun Menu(navigator: NavHostController) {
         }
     }
 }
-
