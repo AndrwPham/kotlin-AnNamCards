@@ -47,7 +47,10 @@ fun Navigator(
                 englishQuery = searchArgs.en,
                 vietnameseQuery = searchArgs.vn,
                 englishExact = searchArgs.searchByEnglish,
-                vietnameseExact = searchArgs.searchByVietnamese
+                vietnameseExact = searchArgs.searchByVietnamese,
+                navigateToEdit = { args ->
+                    navController.navigate(args)
+                }
             )
         }
         composable<AddCardRoute> {
@@ -79,6 +82,15 @@ fun Navigator(
                 navBack = navBack,
                 flashCardDao = flashCardDao,
                 networkService = networkService
+            )
+        }
+        composable<EditCardRoute>{ backStackEntry ->
+
+            EditCard(
+                navBack = navBack,
+                flashCardDao = flashCardDao,
+                english = backStackEntry.toRoute<EditCardRoute>().english,
+                vietnamese = backStackEntry.toRoute<EditCardRoute>().vietnamese
             )
         }
         

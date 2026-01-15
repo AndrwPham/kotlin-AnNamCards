@@ -31,6 +31,9 @@ interface FlashCardDao {
     @Query("SELECT * FROM FlashCards WHERE uid IN (:flashCardIds)")
     suspend fun loadAllByIds(flashCardIds: IntArray): List<FlashCard>
 
+    @Query("SELECT * FROM FlashCards WHERE uid = :uid LIMIT 1")
+    suspend fun getById(uid: Int): FlashCard?
+
     @Query("SELECT * FROM FlashCards ORDER BY RANDOM() LIMIT 3")
     suspend fun loadRandomThree(): List<FlashCard>
 
@@ -61,10 +64,13 @@ interface FlashCardDao {
 
     @Query("DELETE FROM FlashCards")
     suspend fun clearAll()
+
+    @Query("SELECT * FROM FlashCards WHERE uid = :uid")
+    suspend fun getFlashCardById(uid: Int): FlashCard
+
 }
 
 @Database(entities = [FlashCard::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun flashCardDao(): FlashCardDao
 }
-

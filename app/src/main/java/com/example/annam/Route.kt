@@ -21,6 +21,12 @@ object AddCardRoute
 object StudyCardsRoute
 
 @Serializable
+data class EditCardRoute(
+    val english: String,
+    val vietnamese: String
+)
+
+@Serializable
 data class SearchCardsRoute(
     val en: String,
     val vn: String,

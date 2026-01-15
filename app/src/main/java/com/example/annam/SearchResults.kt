@@ -31,7 +31,8 @@ fun SearchResults(
     englishQuery: String,
     vietnameseQuery: String,
     englishExact: Boolean,
-    vietnameseExact: Boolean
+    vietnameseExact: Boolean,
+    navigateToEdit: (EditCardRoute) -> Unit
 ) {
     var results by remember { mutableStateOf<List<FlashCard>>(emptyList()) }
     var statusMessage by remember { mutableStateOf<String?>(null) }
@@ -89,7 +90,11 @@ fun SearchResults(
                 ) {
                     Text(text = "${card.englishCard.orEmpty()} = ${card.vietnameseCard.orEmpty()}")
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Button(onClick = {""}) {
+                        Button(onClick = {
+                            navigateToEdit(EditCardRoute(
+                                english = card.englishCard.orEmpty(),
+                                vietnamese = card.vietnameseCard.orEmpty()))
+                        }) {
                             Text("Edit")
                         }
                         Button(onClick = {
