@@ -39,8 +39,8 @@ fun Navigator(
                 }
             )
         }
-        composable<SearchCardsRoute> { backStackEntry ->
-            val searchArgs = backStackEntry.toRoute<SearchCardsRoute>()
+        composable<SearchResultsRoute> { backStackEntry ->
+            val searchArgs = backStackEntry.toRoute<SearchResultsRoute>()
             SearchResults(
                 navBack = navBack,
                 flashCardDao = flashCardDao,
@@ -66,9 +66,9 @@ fun Navigator(
             )
         }
         composable<TokenRoute> { backStackEntry ->
-            val emailArg = backStackEntry.toRoute<TokenRoute>().email
+            val emailArg = backStackEntry.toRoute<TokenRoute>()
             TokenScreen(
-                email = emailArg,
+                email = emailArg.email,
                 navBack = navBack,
                 navigateToHome = {
                     navController.navigate(HomeRoute) {

@@ -2,7 +2,6 @@ package com.example.annam
 
 import android.content.Context
 import android.util.Base64
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -162,7 +161,6 @@ fun StudyCard(
                                         val prefs = withContext(Dispatchers.IO) { appContext.dataStore.data.first() }
                                         val email = prefs[EMAIL].orEmpty()
                                         val token = prefs[TOKEN].orEmpty()
-                                        Log.d("demo", "Using credentials email=$email token=$token")
                                         if (email.isBlank() || token.isBlank()) {
                                             errorMessage = "Missing email or token"
                                             return@launch
@@ -176,7 +174,6 @@ fun StudyCard(
                                                 )
                                             )
                                         }
-                                        Log.d("AudioResponse",response.toString())
                                         if (response.code == 200) {
                                             val bytes = Base64.decode(response.message, Base64.DEFAULT)
                                             saveAudioToInternalStorage(appContext, bytes, audioFileName(currentWord))
@@ -185,7 +182,6 @@ fun StudyCard(
                                             errorMessage = response.message
                                         }
                                     } catch (e: Exception) {
-                                        Log.d("demo", "Audio generation failed: $e")
                                         errorMessage = "Error: ${e.message}"
                                     } finally {
                                         isGenerating = false

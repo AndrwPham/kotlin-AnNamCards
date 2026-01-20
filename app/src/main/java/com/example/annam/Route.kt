@@ -27,7 +27,7 @@ data class EditCardRoute(
 )
 
 @Serializable
-data class SearchCardsRoute(
+data class SearchResultsRoute(
     val en: String,
     val vn: String,
     val searchByEnglish: Boolean,
@@ -40,3 +40,4 @@ object SearchScreenRoute
 data class TokenRoute(
     val email: String
 )
+

@@ -1,6 +1,5 @@
 package com.example.annam
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,10 +42,6 @@ fun SearchResults(
         isLoading = true
         statusMessage = null
         try {
-            Log.d(
-                "SearchQuery",
-                "en='$englishQuery' exactEn=$englishExact vn='$vietnameseQuery' exactVn=$vietnameseExact"
-            )
             val matches = withContext(Dispatchers.IO) {
                 flashCardDao.getFilteredFlashCards(
                     en = englishQuery,

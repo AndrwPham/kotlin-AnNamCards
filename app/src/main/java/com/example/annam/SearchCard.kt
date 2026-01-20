@@ -1,6 +1,5 @@
 package com.example.annam
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +20,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SearchCard(
     navBack: () -> Unit,
-    navigateToResults: (SearchCardsRoute) -> Unit
+    navigateToResults: (SearchResultsRoute) -> Unit
 ) {
     var enWord by remember { mutableStateOf("") }
     var vnWord by remember { mutableStateOf("") }
@@ -68,9 +67,8 @@ fun SearchCard(
             onClick = {
                 val englishQuery = enWord.trim()
                 val vietnameseQuery = vnWord.trim()
-                Log.d("search query", "Search for: $englishQuery / $vietnameseQuery")
                 navigateToResults(
-                    SearchCardsRoute(
+                    SearchResultsRoute(
                         en = englishQuery,
                         vn = vietnameseQuery,
                         searchByEnglish = isCheckedEnglish,

@@ -1,10 +1,8 @@
 package com.example.annam
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -32,15 +30,6 @@ fun LoginPage(
     val scope = rememberCoroutineScope()
 
     Column {
-        OutlinedTextField(
-            value = token,
-            onValueChange = { /* This callback will not be triggered when readOnly is true */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .semantics { contentDescription = "tokenTextField" },
-            label = { Text("token") },
-            readOnly = true // Set to true to make it read-only
-        )
 
         TextField(
             value = email,
@@ -57,7 +46,6 @@ fun LoginPage(
                 .semantics { contentDescription = "Enter" },
             onClick = {
                 if (email.isBlank()) {
-                    token = "Please enter an email"
                     return@Button
                 }
                 scope.launch {
@@ -67,14 +55,12 @@ fun LoginPage(
                                 email = UserCredential(email)
                             )
                         }
-                        token = "Code: ${result.code}, Message: ${result.message}"
+                       // token = "Code: ${result.code}, Message: ${result.message}"
                         if (result.code == 200) {
                             navigator.navigate(TokenRoute(email))
                         }
-                        Log.d("result", result.toString())
                     } catch (e: Exception) {
-                        Log.d("FLASHCARD", "Unexpected exception: $e")
-                        token = "Error: ${e.message}"
+                      //  token = "Error: ${e.message}"
                     }
                 }
             }

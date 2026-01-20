@@ -1,6 +1,5 @@
 package com.example.annam
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -55,7 +54,6 @@ fun AddCard(
             val english = enWord.trim()
             val vietnamese = vnWord.trim()
             if (english.isEmpty() || vietnamese.isEmpty()) {
-                Log.d("demo", "Skip insert: blank English or Vietnamese value")
                 return@Button
             }
             scope.launch(Dispatchers.IO) {
@@ -67,9 +65,7 @@ fun AddCard(
                             vietnameseCard = vietnamese
                         )
                     )
-                    Log.d("demo", "Added card: $english / $vietnamese")
                 } catch (e: Exception) {
-                    Log.d("demo", "Insert failed: $e")
                 }
                 withContext(Dispatchers.Main) {
                     enWord = ""
