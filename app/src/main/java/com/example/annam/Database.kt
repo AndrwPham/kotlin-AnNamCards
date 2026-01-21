@@ -54,8 +54,9 @@ interface FlashCardDao {
         exactVn: Int
     ): List<FlashCard>
 
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAll(vararg flashCard: FlashCard)
+    suspend fun insert(flashCard: FlashCard): Long
 
     @Update
     suspend fun update(flashCard: FlashCard)

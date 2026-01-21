@@ -30,8 +30,8 @@ data class EditCardRoute(
 data class SearchCardsRoute(
     val en: String,
     val vn: String,
-    val searchByEnglish: Boolean,
-    val searchByVietnamese: Boolean
+    val searchExactByEnglish: Boolean,
+    val searchExactByVietnamese: Boolean
 )
 @Serializable
 object SearchScreenRoute

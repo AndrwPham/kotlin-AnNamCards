@@ -41,11 +41,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 val Context.dataStore by preferencesDataStore(
     name = "user_credentials"
 )
-
-//Because Preferences DataStore doesn't use a predefined schema,
-//you must use the corresponding key type function to define a key for each value that you need to store
-//in the DataStore<Preferences> instance.
-//For example, to define a key for an int value, use intPreferencesKey()
 val TOKEN = stringPreferencesKey("token")
 val EMAIL = stringPreferencesKey("email")
 

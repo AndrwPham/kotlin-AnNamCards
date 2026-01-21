@@ -27,6 +27,7 @@ fun AddCard(
 ) {
     var enWord by remember { mutableStateOf("") }
     var vnWord by remember { mutableStateOf("") }
+    var statusMessage by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
     Column {
@@ -56,28 +57,43 @@ fun AddCard(
             val vietnamese = vnWord.trim()
             if (english.isEmpty() || vietnamese.isEmpty()) {
                 Log.d("demo", "Skip insert: blank English or Vietnamese value")
+                statusMessage = "English and Vietnamese are required."
                 return@Button
             }
             scope.launch(Dispatchers.IO) {
                 try {
-                    flashCardDao.insertAll(
+                    val insertResult = flashCardDao.insert(
                         FlashCard(
                             uid = 0,
                             englishCard = english,
                             vietnameseCard = vietnamese
                         )
                     )
-                    Log.d("demo", "Added card: $english / $vietnamese")
+                    val inserted = insertResult != -1L
+                    Log.d("demo", "Insert result inserted=$inserted for $english / $vietnamese")
+                    withContext(Dispatchers.Main) {
+                        statusMessage = if (inserted) {
+                            enWord = ""
+                            vnWord = ""
+                            "Flashcard added."
+                        } else {
+                            "Flashcard already exists."
+                        }
+                    }
                 } catch (e: Exception) {
                     Log.d("demo", "Insert failed: $e")
-                }
-                withContext(Dispatchers.Main) {
-                    enWord = ""
-                    vnWord = ""
+                    withContext(Dispatchers.Main) {
+                        statusMessage = "Insert failed: ${e.message}"
+                    }
                 }
             }
         }) {
             Text("Add")
+        }
+
+        statusMessage?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(it)
         }
     }
 }

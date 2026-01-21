@@ -19,6 +19,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,6 +40,7 @@ fun SearchResults(
     var statusMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
+    val actionColumnWidth = 200.dp
 
     LaunchedEffect(englishQuery, vietnameseQuery, englishExact, vietnameseExact) {
         isLoading = true
@@ -82,14 +85,46 @@ fun SearchResults(
 
         if (results.isNotEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "English",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = "Vietnamese",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = "Actions",
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.width(actionColumnWidth)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             results.forEach { card ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "${card.englishCard.orEmpty()} = ${card.vietnameseCard.orEmpty()}")
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = card.englishCard.orEmpty(),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = card.vietnameseCard.orEmpty(),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Row(
+                        modifier = Modifier.width(actionColumnWidth),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Button(onClick = {
                             navigateToEdit(EditCardRoute(
                                 english = card.englishCard.orEmpty(),

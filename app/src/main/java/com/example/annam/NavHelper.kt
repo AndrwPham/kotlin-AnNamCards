@@ -46,8 +46,8 @@ fun Navigator(
                 flashCardDao = flashCardDao,
                 englishQuery = searchArgs.en,
                 vietnameseQuery = searchArgs.vn,
-                englishExact = searchArgs.searchByEnglish,
-                vietnameseExact = searchArgs.searchByVietnamese,
+                englishExact = searchArgs.searchExactByEnglish,
+                vietnameseExact = searchArgs.searchExactByVietnamese,
                 navigateToEdit = { args ->
                     navController.navigate(args)
                 }
@@ -89,6 +89,7 @@ fun Navigator(
             EditCard(
                 navBack = navBack,
                 flashCardDao = flashCardDao,
+                networkService = networkService,
                 english = backStackEntry.toRoute<EditCardRoute>().english,
                 vietnamese = backStackEntry.toRoute<EditCardRoute>().vietnamese
             )
