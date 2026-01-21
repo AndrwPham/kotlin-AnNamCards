@@ -28,7 +28,7 @@ import kotlinx.coroutines.withContext
 fun TokenScreen(
     email: String,
     navBack: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: (HomeRoute) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -85,7 +85,7 @@ fun TokenScreen(
                             preferences[TOKEN] = token
                         }
                     }
-                    navigateToHome()
+                    navigateToHome(HomeRoute)
                 }
             })
         {

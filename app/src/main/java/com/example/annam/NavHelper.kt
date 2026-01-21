@@ -46,8 +46,8 @@ fun Navigator(
                 flashCardDao = flashCardDao,
                 englishQuery = searchArgs.en,
                 vietnameseQuery = searchArgs.vn,
-                englishExact = searchArgs.searchByEnglish,
-                vietnameseExact = searchArgs.searchByVietnamese,
+                englishExact = searchArgs.exactByEnglish,
+                vietnameseExact = searchArgs.exactByVietnamese,
                 navigateToEdit = { args ->
                     navController.navigate(args)
                 }
@@ -62,7 +62,9 @@ fun Navigator(
         composable<LoginRoute> {
             LoginPage(
                 networkService= networkService,
-                navigator = navController,
+                navigateToToken = { args ->
+                    navController.navigate(args)
+                },
                 navBack = navBack
 
             )
@@ -72,10 +74,8 @@ fun Navigator(
             TokenScreen(
                 email = emailArg.email,
                 navBack = navBack,
-                navigateToHome = {
-                    navController.navigate(HomeRoute) {
-                        launchSingleTop = true
-                    }
+                navigateToHome = { args ->
+                    navController.navigate(args)
                 }
             )
         }
@@ -92,7 +92,8 @@ fun Navigator(
                 navBack = navBack,
                 flashCardDao = flashCardDao,
                 english = backStackEntry.toRoute<EditCardRoute>().english,
-                vietnamese = backStackEntry.toRoute<EditCardRoute>().vietnamese
+                vietnamese = backStackEntry.toRoute<EditCardRoute>().vietnamese,
+                networkService = networkService
             )
         }
 

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -18,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,6 +28,7 @@ fun AddCard(
 ) {
     var enWord by remember { mutableStateOf("") }
     var vnWord by remember { mutableStateOf("") }
+    var statusMessage by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
     Column (
@@ -66,27 +65,41 @@ fun AddCard(
             val english = enWord.trim()
             val vietnamese = vnWord.trim()
             if (english.isEmpty() || vietnamese.isEmpty()) {
+                statusMessage = "English and Vietnamese are required."
                 return@Button
             }
-            scope.launch(Dispatchers.IO) {
-                try {
-                    flashCardDao.insertAll(
-                        FlashCard(
-                            uid = 0,
-                            englishCard = english,
-                            vietnameseCard = vietnamese
+            statusMessage = null
+            scope.launch {
+                val insertResult = try {
+                    withContext(Dispatchers.IO) {
+                        flashCardDao.insertAll(
+                            FlashCard(
+                                uid = 0,
+                                englishCard = english,
+                                vietnameseCard = vietnamese
+                            )
                         )
-                    )
+                    }
                 } catch (e: Exception) {
+                    statusMessage = "Add failed: ${e.message}"
+                    return@launch
                 }
-                // thử lưu DB -> nếu lỗi thì thôi, quay về màn hình chính, xoá chữ
-                withContext(Dispatchers.Main) {
+                val insertedId = insertResult.firstOrNull() ?: -1L
+                if (insertedId == -1L) {
+                    statusMessage = "Flashcard already exists."
+                } else {
                     enWord = ""
                     vnWord = ""
+                    statusMessage = "Added."
                 }
             }
         }) {
             Text("Add")
+        }
+
+        statusMessage?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(it)
         }
     }
 }

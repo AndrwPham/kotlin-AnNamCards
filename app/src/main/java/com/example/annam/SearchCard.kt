@@ -86,8 +86,8 @@ fun SearchCard(
                     SearchResultsRoute(
                         en = englishQuery,
                         vn = vietnameseQuery,
-                        searchByEnglish = isCheckedEnglish,
-                        searchByVietnamese = isCheckedVietnamese
+                        exactByEnglish = isCheckedEnglish,
+                        exactByVietnamese = isCheckedVietnamese
                     )
                 )
             }
