@@ -3,7 +3,9 @@ package com.example.annam
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
@@ -27,7 +29,13 @@ fun SearchCard(
     var isCheckedEnglish by remember { mutableStateOf(false) }
     var isCheckedVietnamese by remember { mutableStateOf(false) }
 
-    Column{
+    Column (
+        modifier = Modifier.fillMaxWidth()
+            .safeDrawingPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    )
+    {
+        Spacer(modifier = Modifier.height(12.dp))
         Button(
             modifier = Modifier.align(Alignment.Start),
             onClick = navBack
@@ -37,17 +45,23 @@ fun SearchCard(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Checkbox(
                 checked = isCheckedEnglish,
                 onCheckedChange = { isCheckedEnglish = it }
             )
+
             TextField(
                 value = enWord,
                 onValueChange = { enWord = it },
-                label = { Text("en") }
+                label = { Text("en") },
+                modifier = Modifier.weight(1f)
             )
         }
+
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(
@@ -57,7 +71,8 @@ fun SearchCard(
             TextField(
                 value = vnWord,
                 onValueChange = { vnWord = it },
-                label = { Text("vn") }
+                label = { Text("vn") },
+                modifier = Modifier.weight(1f)
             )
         }
 
@@ -77,8 +92,11 @@ fun SearchCard(
                 )
             }
         ) {
-            Text("Search")
+            Text("Search",
+                )
         }
-
     }
-}
+    }
+
+
+

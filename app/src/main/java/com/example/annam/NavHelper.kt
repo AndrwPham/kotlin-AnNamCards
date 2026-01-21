@@ -62,7 +62,9 @@ fun Navigator(
         composable<LoginRoute> {
             LoginPage(
                 networkService= networkService,
-                navigator = navController
+                navigator = navController,
+                navBack = navBack
+
             )
         }
         composable<TokenRoute> { backStackEntry ->
@@ -93,6 +95,6 @@ fun Navigator(
                 vietnamese = backStackEntry.toRoute<EditCardRoute>().vietnamese
             )
         }
-        
+
     }
 }

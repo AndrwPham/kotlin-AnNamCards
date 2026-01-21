@@ -2,7 +2,9 @@ package com.example.annam
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -57,14 +59,17 @@ fun EditCard(
         }
     }
 
-    Column {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+        .safeDrawingPadding()
+    ) {
+
         Button(
             modifier = Modifier.align(Alignment.Start),
             onClick = navBack
         ) {
             Text("Back")
         }
-
         Spacer(modifier = Modifier.height(12.dp))
 
         when {

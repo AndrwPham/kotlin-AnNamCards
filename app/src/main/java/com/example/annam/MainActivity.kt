@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.annam.ui.theme.AnNamTheme
 import kotlinx.coroutines.runBlocking
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
             val networkService = retrofit.create(NetworkService::class.java)
             AnNamTheme {
                 Navigator(
-                    navController = NavHostController(this),
+                    navController = rememberNavController(),
                     networkService = networkService,
                     flashCardDao = flashCardDao
                 )
